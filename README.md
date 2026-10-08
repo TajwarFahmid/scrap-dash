@@ -7,3 +7,10 @@ Scrap Dash is a browser game where players race to search the junkyard, carry th
 Install Node.js 20 or newer, open a terminal in this folder, then run:
 
 ```sh
+node server.js
+```
+
+Open `http://localhost:3000`. Online rooms require this server; opening `index.html` directly only loads the page without multiplayer support.
+
+## Controls
+
