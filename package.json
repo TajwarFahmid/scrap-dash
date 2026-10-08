@@ -1,0 +1,12 @@
+{
+  "name": "scrap-dash",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Scrap Dash online multiplayer junkyard racing game",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
