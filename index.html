@@ -36,3 +36,29 @@
             <div class="machine-body"><div class="face"><span class="eye eye-left"></span><span class="eye eye-right"></span><span class="mouth"></span></div><div class="body-plate"></div></div>
             <div class="machine-neck"></div><div class="machine-base"><span class="vent"></span><span class="vent"></span><span class="vent"></span><span class="vent"></span></div>
             <div class="wheel wheel-left"><i></i></div><div class="wheel wheel-right"><i></i></div><div class="machine-arm arm-left">⌁</div><div class="machine-arm arm-right">⌁</div>
+          </div>
+          <div class="floating-part part-gear">⚙</div><div class="floating-part part-bolt">⌁</div><div class="floating-part part-star">✳</div>
+          <div class="art-label"><span class="label-dot"></span> SCRAPBOT-01 <small>IN PROGRESS</small></div>
+          <div class="art-tag tag-bottom">REUSE <span>✳</span> REBUILD <span>✳</span> RACE</div>
+        </div>
+      </section>
+
+      <section class="game-preview" id="how">
+        <div class="preview-heading"><div><span class="section-kicker">THE RUNDOWN</span><h2>One yard. <span>Three parts.</span></h2></div><span class="mono">01 — 03</span></div>
+        <div class="steps">
+          <article class="step"><div class="step-icon icon-pickup">⌖</div><div class="step-number">01 / SCAVENGE</div><h3>Search the heaps</h3><p>Find a coil, a gear, and a battery buried in the shared center of the yard.</p></article>
+          <article class="step"><div class="step-icon icon-install">⚙</div><div class="step-number">02 / INSTALL</div><h3>Build your machine</h3><p>Press E to search and install. Carrying a part slows your trip back. Get bumped? Keep what you found.</p></article>
+          <article class="step"><div class="step-icon icon-win">✳</div><div class="step-number">03 / WIN</div><h3>Take the round</h3><p>First to install all three wins. Win two rounds to claim the whole match.</p></article>
+        </div>
+      </section>
+      <footer><a class="brand footer-brand" href="#"><span class="brand-mark">✳</span><span>SCRAP<span class="brand-dash">/</span>DASH</span></a><span>Made from the good stuff. © 2025 Scrap Dash</span><span class="footer-status"><i></i> ALL SYSTEMS GO</span></footer>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="roomModal" aria-hidden="true"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><button class="modal-close" id="closeModal" aria-label="Close">×</button><span class="section-kicker">YOUR NEXT ADVENTURE</span><h2 id="modalTitle">Pick your pit stop.</h2><p>Join a crew with a room code, or make your own yard.</p><div id="roomForm"><label class="field-label" for="playerName">YOUR NAME</label><input class="name-input" id="playerName" maxlength="18" placeholder="Junkyard Jess" /><label class="field-label room-code-label" for="roomCode">ROOM CODE</label><div class="code-row"><input id="roomCode" maxlength="6" placeholder="e.g. SCRAP7" autocomplete="off" /><button class="button button-dark" id="joinRoom">Join room <span>→</span></button></div><div class="modal-divider"><span>OR</span></div><button class="button button-create" id="createRoom"><span>＋</span> Create a new room <span>↗</span></button><div class="modal-foot"><span class="lock-icon">⌑</span> Rooms hold 2–8 players</div></div><div class="room-lobby" id="roomLobby" hidden><div class="room-code-card"><div><span class="field-label">ROOM CODE · SHARE WITH FRIENDS</span><strong id="lobbyCode">------</strong></div><button class="copy-code" id="copyCode">Copy code</button></div><div class="lobby-status" id="lobbyStatus">Waiting for players…</div><div class="lobby-players" id="lobbyPlayers"></div><button class="button button-dark lobby-start" id="startRoom" disabled>Waiting for 1 more player</button><button class="lobby-leave" id="leaveRoom">Leave room</button></div></section></div>
+  <div class="toast" id="toast" role="status"></div>
+  <div class="game-screen" id="gameScreen" aria-hidden="true"><header class="game-head"><a class="brand" href="#"><span class="brand-mark">✳</span><span>SCRAP<span class="brand-dash">/</span>DASH</span></a><div class="game-meta"><span class="game-room">YARD 04 <i>● LIVE</i></span><span id="roundLabel">ROUND 1 / 3</span></div><button class="exit-game" id="exitGame">Exit ×</button></header><div class="game-layout"><aside class="game-sidebar"><span class="section-kicker">THE BUILD RACE</span><h2>Make some<br /><em>beautiful junk.</em></h2><div class="score-list" id="scoreList"></div><div class="part-legend"><span class="section-kicker">YOUR PARTS</span><div class="part-line"><i class="part-coil"></i> Coil</div><div class="part-line"><i class="part-gear"></i> Gear</div><div class="part-line"><i class="part-battery"></i> Battery</div></div><div class="controls"><span class="section-kicker">HOW TO MOVE</span><p><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or arrow keys</p><p>Stand by a heap and press <kbd>E</kbd> to search. Carry one part at a time; it slows you down.</p><p>At your station, press <kbd>E</kbd> to install.</p><p><kbd>SPACE</kbd> Knock nearby rivals back and briefly stun them. 2.5 sec cooldown.</p></div></aside><section class="yard-wrap"><div class="yard-top"><span>JUNKYARD <b>04</b> · THE OLD RAILYARD</span><span id="timer">02:30</span></div><canvas id="yard" width="900" height="580" aria-label="Scrap Dash game yard"></canvas><div class="yard-bottom"><span><i class="yard-dot"></i> PARTS ARE BURIED IN SCRAP HEAPS</span><span id="carryStatus">HANDS FREE</span></div><div class="round-banner" id="roundBanner"><span class="section-kicker">ROUND COMPLETE</span><h2 id="bannerTitle">Nice work!</h2><p id="bannerText"></p><button class="button button-dark" id="nextRound">Next round <span>→</span></button></div></section></div></div>
+  <script src="app.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
