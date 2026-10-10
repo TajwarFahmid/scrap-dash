@@ -78,3 +78,42 @@ window.clearOnlineLobby = () => {
 document.querySelector('#openJoin').addEventListener('click', showModal);
 document.querySelector('#quickPlay').addEventListener('click', async () => {
   if (lobby) {
+    try { await request(`/api/rooms/${lobby.code}/leave?playerId=${encodeURIComponent(lobby.playerId)}`, 'POST', {}); } catch {}
+    lobby = null; clearInterval(lobbyPoll);
+  }
+  window.startScrapDash();
+});
+document.querySelector('#closeModal').addEventListener('click', hideModal);
+modal.addEventListener('click', event => { if (event.target === modal) hideModal(); });
+document.addEventListener('keydown', event => { if (event.key === 'Escape') hideModal(); });
+playerNameInput.addEventListener('change', playerName);
+document.querySelector('#roomCode').addEventListener('input', event => { event.target.value = event.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); });
+document.querySelector('#joinRoom').addEventListener('click', async () => {
+  const code = document.querySelector('#roomCode').value.trim();
+  if (code.length < 4) { announce('Enter a room code with at least 4 characters.'); return; }
+  try { const data = await request(`/api/rooms/${encodeURIComponent(code)}/join`, 'POST', {name:playerName()}); showLobby({...data,host:false}); }
+  catch (error) { announce(error.message); }
+});
+document.querySelector('#createRoom').addEventListener('click', async () => {
+  try { const data = await request('/api/rooms', 'POST', {name:playerName()}); showLobby({...data,host:true}); }
+  catch { announce('Room creation needs the game server. Start it with “node server.js” and try again.'); }
+});
+document.querySelector('#copyCode').addEventListener('click', async () => {
+  if (!lobby) return;
+  try { await navigator.clipboard.writeText(lobby.code); announce('Room code copied.'); }
+  catch { announce(`Share this room code: ${lobby.code}`); }
+});
+document.querySelector('#startRoom').addEventListener('click', async () => {
+  if (!lobby?.host) return;
+  try { await request(`/api/rooms/${lobby.code}/start?playerId=${encodeURIComponent(lobby.playerId)}`, 'POST', {}); await refreshLobby(); }
+  catch (error) { announce(error.message); }
+});
+document.querySelector('#leaveRoom').addEventListener('click', async () => {
+  if (!lobby) return;
+  try { await request(`/api/rooms/${lobby.code}/leave?playerId=${encodeURIComponent(lobby.playerId)}`, 'POST', {}); } catch {}
+  lobby = null; clearInterval(lobbyPoll);
+  document.querySelector('#roomForm').hidden = false;
+  document.querySelector('#roomLobby').hidden = true;
+  document.querySelector('#modalTitle').textContent = 'Pick your pit stop.';
+  document.querySelector('.modal>p').textContent = 'Join a crew with a room code, or make your own yard.';
+});
