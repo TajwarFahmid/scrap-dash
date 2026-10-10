@@ -38,3 +38,43 @@ function showLobby(session) {
   document.querySelector('#lobbyCode').textContent = session.code;
   document.querySelector('#modalTitle').textContent = session.host ? 'Your yard is open.' : 'You’re in the yard.';
   document.querySelector('.modal>p').textContent = 'Share the room code and wait for your crew to join.';
+  refreshLobby();
+  clearInterval(lobbyPoll);
+  lobbyPoll = setInterval(refreshLobby, 800);
+}
+async function refreshLobby() {
+  if (!lobby) return;
+  try {
+    const state = await request(`/api/rooms/${lobby.code}?playerId=${encodeURIComponent(lobby.playerId)}`);
+    document.querySelector('#lobbyPlayers').innerHTML = state.players.map((p, i) => `<div class="lobby-player"><i style="background:${p.color}"></i>${escapeHtml(p.name)}<span>${p.id === state.hostId ? 'HOST' : `PLAYER ${i+1}`}</span></div>`).join('');
+    const start = document.querySelector('#startRoom');
+    start.disabled = !lobby.host || state.players.length < 2;
+    start.textContent = lobby.host ? (state.players.length < 2 ? 'Waiting for 1 more player' : `Start match · ${state.players.length} players`) : 'Waiting for the host to start';
+    document.querySelector('#lobbyStatus').textContent = state.players.length < 2 ? 'Waiting for another scavenger to join…' : `${state.players.length} scavengers ready. The host can start the match.`;
+    if (state.phase === 'playing') launchNetworkGame();
+  } catch (error) {
+    clearInterval(lobbyPoll);
+    announce(error.message);
+  }
+}
+function escapeHtml(value) { return String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char])); }
+function launchNetworkGame() {
+  if (!lobby) return;
+  clearInterval(lobbyPoll);
+  hideModal();
+  document.querySelector('#roomForm').hidden = false;
+  document.querySelector('#roomLobby').hidden = true;
+  window.startOnlineScrapDash(lobby.code, lobby.playerId);
+}
+window.clearOnlineLobby = () => {
+  lobby = null;
+  clearInterval(lobbyPoll);
+  document.querySelector('#roomForm').hidden = false;
+  document.querySelector('#roomLobby').hidden = true;
+  document.querySelector('#modalTitle').textContent = 'Pick your pit stop.';
+  document.querySelector('.modal>p').textContent = 'Join a crew with a room code, or make your own yard.';
+};
+
+document.querySelector('#openJoin').addEventListener('click', showModal);
+document.querySelector('#quickPlay').addEventListener('click', async () => {
+  if (lobby) {
